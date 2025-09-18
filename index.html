@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Landing Page</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
+body{background:#128C7E;color:#333;line-height:1.6;padding:10px;display:flex;justify-content:center;align-items:flex-start;}
+.container{width:100%;max-width:480px;background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.2);padding:15px;margin-bottom:20px;}
+header{text-align:center;margin-bottom:10px;}
+header #logo-container img{max-height:60px;}
+.hero{text-align:center;padding:15px;border-bottom:1px solid #ddd;}
+.hero h1{font-size:1.5rem;margin-bottom:10px;}
+.hero p{font-size:0.95rem;margin-bottom:15px;}
+.whatsapp-btn,.exclusive-btn,.subscribe-btn{display:inline-block;padding:10px 15px;margin:5px;font-size:0.95rem;background:#25D366;color:#fff;border:none;border-radius:8px;text-decoration:none;}
+.whatsapp-btn i,.exclusive-btn i,.subscribe-btn i{margin-right:5px;}
+.subscriber-exclusive{background:#f0f8ff;padding:10px;margin:10px 0;border-radius:10px;display:none;}
+#subscriber-count{font-size:0.85rem;margin-top:5px;text-align:center;color:#555;}
+.schedule-info{text-align:center;padding:10px;}
+.status-indicator{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;}
+.status-open{background:#4CAF50;}
+.status-closed{background:#f44336;}
+.image-gallery{margin:15px 0;}
+.gallery-container{overflow:hidden;position:relative;border-radius:10px;}
+.gallery-slider{display:flex;transition:0.4s;}
+.gallery-image{width:100%;border-radius:10px;cursor:pointer;flex-shrink:0;}
+.thumbnail-container{display:flex;overflow-x:auto;margin-top:5px;}
+.thumbnail{width:60px;height:40px;margin-right:5px;border-radius:5px;cursor:pointer;opacity:0.7;flex-shrink:0;}
+.thumbnail.active{border:2px solid #25D366;opacity:1;}
+.admin-panel{margin-top:15px;border-top:1px solid #ddd;padding-top:10px;}
+.admin-tabs{display:flex;justify-content:space-around;margin-bottom:10px;}
+.admin-tab{padding:8px 5px;cursor:pointer;border-radius:5px;font-size:0.85rem;background:#eee;}
+.admin-tab.active{background:#25D366;color:#fff;}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+.form-group{margin-bottom:10px;}
+input[type=text],textarea,input[type=file],select{width:100%;padding:8px;margin-top:3px;border:1px solid #ccc;border-radius:5px;font-size:0.9rem;}
+.save-btn{background:#128C7E;color:#fff;border:none;padding:8px 10px;border-radius:5px;margin-top:5px;cursor:pointer;width:100%;}
+.notification{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 15px;border-radius:10px;z-index:1000;}
+@media(max-width:480px){.hero h1{font-size:1.3rem;}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div id="logo-container">Your Logo</div>
+<div class="location">Riyadh, Saudi Arabia</div>
+</header>
+
+<section class="hero" id="hero-text">
+<h1>Contact Us Through WhatsApp</h1>
+<p>We provide high-quality services in Riyadh. Message us on WhatsApp for quick response.</p>
+<a href="https://wa.me/966123456789" class="whatsapp-btn" id="whatsapp-button"><i class="fab fa-whatsapp"></i> Contact on WhatsApp</a>
+</section>
+
+<section class="subscribe-section">
+<h3>Subscribe to get updates</h3>
+<button class="subscribe-btn" id="subscribe-button"><i class="fas fa-bell"></i> Subscribe Now</button>
+<div id="subscriber-count">0 people have subscribed</div>
+</section>
+
+<section class="subscriber-exclusive" id="subscriber-exclusive">
+<h3>Exclusive for Subscribers!</h3>
+<p>Priority WhatsApp group & special offers.</p>
+<a href="#" class="exclusive-btn" id="exclusive-button"><i class="fab fa-whatsapp"></i> Join Exclusive Group</a>
+</section>
+
+<section class="schedule-info">
+<h2>Our Service Hours</h2>
+<div id="opening-time">8:00 AM - 8:00 PM</div>
+<div id="status-display"><span class="status-indicator status-open"></span> Currently Open</div>
+</section>
+
+<section class="image-gallery">
+<h2>Our Services</h2>
+<div class="gallery-container">
+<div class="gallery-slider" id="gallery-slider"></div>
+<div class="thumbnail-container" id="thumbnail-container"></div>
+</div>
+</section>
+
+<section class="admin-panel">
+<div class="admin-tabs">
+<div class="admin-tab active" data-tab="settings">Settings</div>
+<div class="admin-tab" data-tab="subscribers">Subscribers</div>
+<div class="admin-tab" data-tab="notifications">Notifications</div>
+</div>
+
+<div class="tab-content active" id="settings-tab">
+<h3>Admin Settings</h3>
+<div class="form-group">
+<label for="whatsapp-link">WhatsApp Link</label>
+<input type="text" id="whatsapp-link" placeholder="https://wa.me/1234567890">
+</div>
+<div class="form-group">
+<label for="exclusive-link">Exclusive Subscriber WhatsApp Link</label>
+<input type="text" id="exclusive-link" placeholder="https://chat.whatsapp.com/example">
+</div>
+<div class="form-group">
+<label for="gallery-image-upload">Upload Gallery Images (multiple)</label>
+<input type="file" id="gallery-image-upload" accept="image/*" multiple>
+</div>
+<div class="form-group">
+<label for="image-urls">Or enter image URLs (one per line)</label>
+<textarea id="image-urls" rows="5" placeholder="https://example.com/image1.jpg\nhttps://example.com/image2.jpg"></textarea>
+</div>
+<button class="save-btn" id="save-settings">Save Settings</button>
+</div>
+
+<div class="tab-content" id="subscribers-tab">
+<h3>Subscriber Management</h3>
+<div id="subscriber-list-container"><p>No subscribers yet</p></div>
+<div class="admin-controls">
+<button class="save-btn" id="export-subscribers" style="background:#2196F3;">Export Subscribers</button>
+<button class="save-btn" id="clear-subscribers" style="background:#f44336;">Clear All Subscribers</button>
+</div>
+</div>
+
+<div class="tab-content" id="notifications-tab">
+<h3>Send Notification</h3>
+<div class="form-group">
+<label for="notification-message">Message</label>
+<input type="text" id="notification-message" placeholder="Check today's update!">
+</div>
+<button class="save-btn" id="send-notification" style="background:#25D366;">Send Notification</button>
+<div class="form-group" style="margin-top:10px;">
+<label for="notification-history">Notification History</label>
+<textarea id="notification-history" rows="5" readonly></textarea>
+</div>
+</div>
+</section>
+
+<footer>
+<p>© 2023 Your Company | Riyadh, Saudi Arabia | All Rights Reserved</p>
+</footer>
+</div>
+
+<div class="notification" id="notification"><i class="fas fa-bell"></i> <span id="notification-text"></span></div>
+
+<script>
+// ===== DATA =====
+let subscribers=JSON.parse(localStorage.getItem('subscribers'))||[];
+let subscriberCount=subscribers.length;
+let galleryImages=['https://via.placeholder.com/400x200/128C7E/fff?text=Service+1','https://via.placeholder.com/400x200/075E54/fff?text=Service+2','https://via.placeholder.com/400x200/25D366/fff?text=Service+3'];
+let currentImageIndex=0;
+
+// ===== FUNCTIONS =====
+function updateStatus(){const h=new Date().getHours();const s=document.getElementById('status-display');if(h>=8&&h<20){s.innerHTML='<span class="status-indicator status-open"></span> Currently Open';s.style.color='#075E54';}else{s.innerHTML='<span class="status-indicator status-closed"></span> Currently Closed';s.style.color='#f44336';}}
+function updateGallerySlider(){const slider=document.getElementById('gallery-slider');slider.innerHTML='';galleryImages.forEach(url=>{const img=document.createElement('img');img.src=url;img.className='gallery-image';img.addEventListener('click',()=>openLightbox(url));slider.appendChild(img);});updateThumbnails();}
+function updateThumbnails(){const container=document.getElementById('thumbnail-container');container.innerHTML='';galleryImages.forEach((url,i)=>{const thumb=document.createElement('img');thumb.src=url;thumb.className='thumbnail';if(i===currentImageIndex)thumb.classList.add('active');thumb.addEventListener('click',()=>showImage(i));container.appendChild(thumb);});}
+function showImage(i){currentImageIndex=i;document.getElementById('gallery-slider').style.transform=`translateX(-${i*100}%)`;document.querySelectorAll('.thumbnail').forEach((t,j)=>i===j?t.classList.add('active'):t.classList.remove('active'));}
+function openLightbox(url){const lb=document.createElement('div');lb.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center;z-index:9999;';const img=document.createElement('img');img.src=url;img.style.maxWidth='90%';img.style.maxHeight='90%';img.style.borderRadius='10px';lb.appendChild(img);lb.addEventListener('click',()=>lb.remove());document.body.appendChild(lb);}
+function isSubscribed(){return localStorage.getItem('userSubscribed')==='true';}
+
+// ===== SUBSCRIBE =====
+function subscribeUser(){const subId='sub_'+Math.random().toString(36).substr(2,9);const newSub={id:subId,date:new Date().toLocaleDateString(),time:new Date().toLocaleTimeString(),timestamp:new Date().getTime()};subscribers.push(newSub);localStorage.setItem('subscribers',JSON.stringify(subscribers));localStorage.setItem('userSubscribed','true');subscriberCount=subscribers.length;updateSubscriberCount();showNotification('Subscribed!');document.getElementById('subscribe-button').innerHTML='<i class="fas fa-check"></i> Subscribed';document.getElementById('subscribe-button').style.background='#4CAF50';document.getElementById('subscribe-button').disabled=true;document.getElementById('subscriber-exclusive').style.display='block';}
+function updateSubscriberCount(){document.getElementById('subscriber-count').textContent=subscriberCount+' people have subscribed';}
+function showNotification(msg,d=4000){const n=document.getElementById('notification');const t=document.getElementById('notification-text');t.textContent=msg;n.style.display='flex';setTimeout(()=>{n.style.display='none';},d);}
+
+// ===== ADMIN PANEL =====
+function saveSettings(){const wl=document.getElementById('whatsapp-link').value;if(wl){document.getElementById('whatsapp-button').href=wl;localStorage.setItem('whatsappLink',wl);}const el=document.getElementById('exclusive-link').value;if(el){document.getElementById('exclusive-button').href=el;localStorage.setItem('exclusiveLink',el);}const urls=document.getElementById('image-urls').value.split('\n').filter(u=>u.trim()!=='');if(urls.length>0){galleryImages=urls;updateGallerySlider();localStorage.setItem('galleryImages',JSON.stringify(galleryImages));}showNotification('Settings saved!');}
+function loadSavedSettings(){const wl=localStorage.getItem('whatsappLink');if(wl){document.getElementById('whatsapp-link').value=wl;document.getElementById('whatsapp-button').href=wl;}const el=localStorage.getItem('exclusiveLink');if(el){document.getElementById('exclusive-link').value=el;document.getElementById('exclusive-button').href=el;}const imgs=JSON.parse(localStorage.getItem('galleryImages'));if(imgs&&imgs.length>0){galleryImages=imgs;updateGallerySlider();}if(isSubscribed()){document.getElementById('subscribe-button').innerHTML='<i class="fas fa-check"></i> Subscribed';document.getElementById('subscribe-button').style.background='#4CAF50';document.getElementById('subscribe-button').disabled=true;document.getElementById('subscriber-exclusive').style.display='block';}}
+function displaySubscribers(){const c=document.getElementById('subscriber-list-container');if(subscribers.length===0){c.innerHTML='<p>No subscribers yet</p>';return;}let html='<p><strong>Total Subscribers: '+subscribers.length+'</strong></p><table style="width:100%;border-collapse:collapse;"><tr style="background:#4CAF50;color:#fff;"><th>ID</th><th>Date</th><th>Time</th></tr>';subscribers.slice().sort((a,b)=>b.timestamp-a.timestamp).forEach((s,i)=>{html+=`<tr style="background:${i%2===0?'#f9f9f9':'#fff'};"><td style="padding:5px;border-bottom:1px solid #ddd;">${s.id}</td><td style="padding:5px;border-bottom:1px solid #ddd;">${s.date}</td><td style="padding:5px;border-bottom:1px solid #ddd;">${s.time}</td></tr>`;});html+='</table>';c.innerHTML=html;}
+function exportSubscribers(){if(subscribers.length===0){alert('No subscribers');return;}let csv='ID,Date,Time\n';subscribers.forEach(s=>{csv+=`${s.id},${s.date},${s.time}\n`;});const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='subscribers.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);}
+function clearSubscribers(){if(confirm('Clear all subscribers?')){subscribers=[];localStorage.setItem('subscribers',JSON.stringify(subscribers));subscriberCount=0;updateSubscriberCount();displaySubscribers();showNotification('All cleared');}}
+
+// ===== INIT =====
+function initApp(){updateStatus();updateGallerySlider();updateSubscriberCount();loadSavedSettings();setInterval(updateStatus,60000);}
+document.addEventListener('DOMContentLoaded',initApp);
+document.getElementById('subscribe-button').addEventListener('click',subscribeUser);
+document.getElementById('save-settings').addEventListener('click',saveSettings);
+document.getElementById('export-subscribers').addEventListener('click',exportSubscribers);
+document.getElementById('clear-subscribers').addEventListener('click',clearSubscribers);
+document.querySelectorAll('.admin-tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));document.getElementById(tab.dataset.tab+'-tab').classList.add('active');if(tab.dataset.tab==='subscribers')displaySubscribers();});});
+document.getElementById('gallery-image-upload').addEventListener('change',function(e){const f=e.target.files;if(f.length>0){galleryImages=[];Array.from(f).forEach(file=>{const r=new FileReader();r.onload=function(ev){galleryImages.push(ev.target.result);if(galleryImages.length===f.length){updateGallerySlider();localStorage.setItem('galleryImages',JSON.stringify(galleryImages));}};r.readAsDataURL(file);});}});
+</script>
+</body>
+</html>
